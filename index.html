@@ -7,18 +7,24 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="container">
+    <header>
       <h1>REST Countries API Lab</h1>
-      <input
-        type="text"
-        id="country-input"
-        placeholder="Enter a country name"
-      />
-      <button id="search-btn">Search</button>
-
+    </header>
+    <main>
+      <section id="search-section">
+        <form id="search-form">
+          <label for="country-input">Country Name:</label>
+          <input
+            type="text"
+            id="country-input"
+            placeholder="Enter a country name"
+          />
+          <button type="submit" id="search-btn">Search</button>
+        </form>
+      </section>
       <section id="country-info"></section>
       <section id="bordering-countries"></section>
-    </div>
+    </main>
     <script src="script.js"></script>
   </body>
 </html>

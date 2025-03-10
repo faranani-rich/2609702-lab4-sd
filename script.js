@@ -1,4 +1,6 @@
-document.getElementById('search-btn').addEventListener('click', function() {
+// Listen for the form submission (using the submit event of the form)
+document.getElementById('search-form').addEventListener('submit', function(event) {
+  event.preventDefault(); // Prevent the form from submitting in the traditional way
   const countryName = document.getElementById('country-input').value.trim();
   if (!countryName) {
     alert("Please enter a country name.");
@@ -15,7 +17,7 @@ async function fetchCountryData(countryName) {
       throw new Error("Country not found");
     }
     const data = await response.json();
-    const country = data[0]; // using the first result
+    const country = data[0]; // Use the first result
     displayCountryInfo(country);
 
     // If the country has bordering countries, display them
@@ -31,13 +33,13 @@ async function fetchCountryData(countryName) {
 }
 
 function displayCountryInfo(country) {
-  const countryInfoDiv = document.getElementById('country-info');
+  const countryInfoSection = document.getElementById('country-info');
   const capital = country.capital ? country.capital[0] : 'N/A';
   const population = country.population.toLocaleString();
   const region = country.region;
   const flagUrl = country.flags && country.flags.png ? country.flags.png : '';
 
-  countryInfoDiv.innerHTML = `
+  countryInfoSection.innerHTML = `
     <h2>${country.name.common}</h2>
     <p><strong>Capital:</strong> ${capital}</p>
     <p><strong>Population:</strong> ${population}</p>
@@ -47,8 +49,8 @@ function displayCountryInfo(country) {
 }
 
 async function displayBorderCountries(borders) {
-  const borderingDiv = document.getElementById('bordering-countries');
-  borderingDiv.innerHTML = "<h3>Bordering Countries:</h3>";
+  const borderingSection = document.getElementById('bordering-countries');
+  borderingSection.innerHTML = "<h3>Bordering Countries:</h3>";
 
   // For each border code, fetch country data
   for (let code of borders) {
@@ -62,13 +64,14 @@ async function displayBorderCountries(borders) {
       const borderCountryName = borderCountry.name.common;
       const borderFlagUrl = borderCountry.flags && borderCountry.flags.png ? borderCountry.flags.png : '';
 
-      const countryCard = document.createElement('div');
+      // Create an article element instead of a div
+      const countryCard = document.createElement('article');
       countryCard.classList.add('country-card');
       countryCard.innerHTML = `
         <h4>${borderCountryName}</h4>
         ${borderFlagUrl ? `<img src="${borderFlagUrl}" alt="Flag of ${borderCountryName}" class="flag">` : ''}
       `;
-      borderingDiv.appendChild(countryCard);
+      borderingSection.appendChild(countryCard);
     } catch (error) {
       console.error("Error fetching border country data:", error);
     }
